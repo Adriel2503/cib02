@@ -1,0 +1,25 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+out/
+
+# Compilados (Maven / Gradle)
+target/
+build/
+.gradle/
+
+# Java
+*.class
+*.log
+hs_err_pid*
+
+# Backup de base de datos (pesa mucho; se referencia con enlace en /db-backup)
+*.bak
+
+# Credenciales y configuración local
+.env
+config.properties
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
