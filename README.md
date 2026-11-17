@@ -37,5 +37,5 @@ Ubicación: `/db-backup`. El archivo `RUTA.txt` indica el enlace de descarga y e
 Pendiente de completar. Pasos previstos:
 
 1. Crear la base de datos con el script SQL del repositorio.
-2. Copiar `config.properties.example` como `config.properties` y poner las credenciales propias.
+2. Copiar `src/main/resources/db.properties.example` como `db.properties` y poner las credenciales propias.
 3. Abrir el proyecto en IntelliJ IDEA y ejecutar la clase principal.

@@ -18,7 +18,7 @@ hs_err_pid*
 
 # Credenciales y configuración local
 .env
-config.properties
+db.properties
 
 # Sistema operativo
 .DS_Store
