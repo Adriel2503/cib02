@@ -32,7 +32,7 @@ Grupo 3 – Sección O. Docente: Ing. M.I.A. Homar Dávila Padilla.
 
 Ubicación: `/db-backup`. El archivo `RUTA.txt` indica el enlace de descarga y el nombre exacto del archivo `.bak`.
 
-## Cómo ejecutar
+## Cómo ejecutarlo
 
 Pendiente de completar. Pasos previstos:
 
