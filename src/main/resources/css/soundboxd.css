@@ -1,0 +1,62 @@
+/* Estilo base de Soundboxd. Las pantallas nuevas deben reutilizar estas clases. */
+
+.root {
+    -fx-font-family: "Segoe UI", "Arial";
+    -fx-font-size: 14px;
+}
+
+.fondo {
+    -fx-background-color: #f4f5f7;
+}
+
+.titulo {
+    -fx-font-size: 34px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1f3864;
+}
+
+.titulo-barra {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1f3864;
+}
+
+.subtitulo {
+    -fx-text-fill: #5b6573;
+}
+
+.error {
+    -fx-text-fill: #c62828;
+}
+
+.nota {
+    -fx-text-fill: #7a8493;
+    -fx-font-size: 12px;
+}
+
+.barra-superior {
+    -fx-background-color: white;
+    -fx-padding: 12 20 12 20;
+    -fx-border-color: #dde1e7;
+    -fx-border-width: 0 0 1 0;
+}
+
+.boton-primario {
+    -fx-background-color: #2f5597;
+    -fx-text-fill: white;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+
+.boton-primario:hover {
+    -fx-background-color: #1f3864;
+}
+
+.boton-secundario {
+    -fx-background-color: white;
+    -fx-text-fill: #2f5597;
+    -fx-border-color: #2f5597;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
