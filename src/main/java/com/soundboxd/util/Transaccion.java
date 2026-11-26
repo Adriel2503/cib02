@@ -30,19 +30,25 @@ public class Transaccion {
     public <T> T ejecutar(Operacion<T> operacion, String mensajeError) {
         try (Connection c = conexiones.get()) {
             c.setAutoCommit(false);
-            boolean confirmada = false;
             try {
                 T resultado = operacion.ejecutar(c);
                 c.commit();
-                confirmada = true;
                 return resultado;
-            } finally {
-                if (!confirmada) {
-                    c.rollback();
-                }
+            } catch (SQLException | RuntimeException | Error fallo) {
+                deshacer(c, fallo);
+                throw fallo;
             }
         } catch (SQLException e) {
             throw new ReglaNegocioException(mensajeError, e);
+        }
+    }
+
+    /** Si el rollback también falla, se anota en el error original en vez de reemplazarlo. */
+    private static void deshacer(Connection c, Throwable fallo) {
+        try {
+            c.rollback();
+        } catch (SQLException e) {
+            fallo.addSuppressed(e);
         }
     }
 }
