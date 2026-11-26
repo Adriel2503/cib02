@@ -30,6 +30,7 @@ class SeguimientoDAOImplTest extends PruebaConBase {
         List<Usuario> seguidos = dao.listarSeguidos(yo);
         assertEquals(1, seguidos.size());
         assertNull(seguidos.get(0).getHashContrasena());
+        assertNull(seguidos.get(0).getCorreo());
 
         dao.dejarDeSeguir(yo, otro);
         assertFalse(dao.existe(yo, otro));

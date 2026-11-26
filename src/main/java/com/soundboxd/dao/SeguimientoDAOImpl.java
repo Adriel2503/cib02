@@ -65,9 +65,9 @@ public class SeguimientoDAOImpl implements SeguimientoDAO {
 
     @Override
     public List<Usuario> listarSeguidos(int idSeguidor) {
-        // No se selecciona hash_contrasena: estos usuarios llegan hasta la vista.
+        // Estos usuarios llegan hasta la vista: no se exponen el correo ni hash_contrasena.
         String sql = """
-                SELECT u.id_usuario, u.nombre_usuario, u.correo, u.rol, u.fecha_registro, u.activo
+                SELECT u.id_usuario, u.nombre_usuario, NULL AS correo, u.rol, u.fecha_registro, u.activo
                 FROM SEGUIMIENTO s INNER JOIN USUARIO u ON u.id_usuario = s.id_seguido
                 WHERE s.id_seguidor = ? AND u.activo = 1
                 ORDER BY u.nombre_usuario
