@@ -1,7 +1,10 @@
 package com.soundboxd.service;
 
+import com.soundboxd.dao.AlbumDAO;
+import com.soundboxd.dao.AlbumDAOImpl;
 import com.soundboxd.dao.ListaDAO;
 import com.soundboxd.dao.ListaDAOImpl;
+import com.soundboxd.model.Album;
 import com.soundboxd.model.Lista;
 import com.soundboxd.model.ListaAlbum;
 import com.soundboxd.model.Usuario;
@@ -12,6 +15,7 @@ import com.soundboxd.util.Transaccion;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,14 +23,16 @@ import java.util.stream.Collectors;
 public class ListaServiceImpl implements ListaService {
 
     private final ListaDAO listas;
+    private final AlbumDAO albumes;
     private final Transaccion transaccion;
 
     public ListaServiceImpl() {
-        this(new ListaDAOImpl(), new Transaccion());
+        this(new ListaDAOImpl(), new AlbumDAOImpl(), new Transaccion());
     }
 
-    public ListaServiceImpl(ListaDAO listas, Transaccion transaccion) {
+    public ListaServiceImpl(ListaDAO listas, AlbumDAO albumes, Transaccion transaccion) {
         this.listas = listas;
+        this.albumes = albumes;
         this.transaccion = transaccion;
     }
 
@@ -108,6 +114,24 @@ public class ListaServiceImpl implements ListaService {
     public Lista obtenerLista(int idLista) {
         return listas.buscarPorId(idLista)
                 .orElseThrow(() -> new ReglaNegocioException("La lista no existe."));
+    }
+
+    @Override
+    public Lista obtenerLista(Usuario actor, int idLista) {
+        Lista lista = obtenerLista(idLista);
+        if (!lista.isEsPublica()) {
+            ControlAcceso.exigirPropietario(actor, lista.getIdUsuario());
+        }
+        return lista;
+    }
+
+    @Override
+    public List<Album> listarAlbumes(Usuario actor, int idLista) {
+        obtenerLista(actor, idLista);
+        return listas.listarAlbumes(idLista).stream()
+                .map(la -> albumes.buscarPorId(la.getIdAlbum()))
+                .flatMap(Optional::stream)
+                .toList();
     }
 
     @Override

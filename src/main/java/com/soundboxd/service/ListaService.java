@@ -1,5 +1,6 @@
 package com.soundboxd.service;
 
+import com.soundboxd.model.Album;
 import com.soundboxd.model.Lista;
 import com.soundboxd.model.Usuario;
 
@@ -21,6 +22,16 @@ public interface ListaService {
     List<Lista> listarMisListas(Usuario actor);
 
     Lista obtenerLista(int idLista);
+
+    /** Devuelve la lista solo si es pública o si el actor es su dueño. */
+    default Lista obtenerLista(Usuario actor, int idLista) {
+        throw new UnsupportedOperationException("Pendiente en esta implementación");
+    }
+
+    /** Álbumes de la lista en orden de posición, con el mismo permiso que obtenerLista(actor, idLista). */
+    default List<Album> listarAlbumes(Usuario actor, int idLista) {
+        throw new UnsupportedOperationException("Pendiente en esta implementación");
+    }
 
     void eliminarLista(Usuario actor, int idLista);
 }
