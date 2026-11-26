@@ -26,5 +26,8 @@ public interface ListaDAO {
 
     void actualizarPosicion(int idLista, int idAlbum, int posicion);
 
+    /** Usa la conexión recibida, para reordenar toda la lista en una sola transacción. */
+    void actualizarPosicion(Connection conexion, int idLista, int idAlbum, int posicion);
+
     void eliminar(int idLista);
 }
