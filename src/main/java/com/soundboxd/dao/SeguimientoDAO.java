@@ -14,6 +14,6 @@ public interface SeguimientoDAO {
 
     boolean existe(int idSeguidor, int idSeguido);
 
-    /** Usuarios a los que sigue idSeguidor. */
+    /** Usuarios activos a los que sigue idSeguidor. El seguimiento de una cuenta desactivada se conserva. */
     List<Usuario> listarSeguidos(int idSeguidor);
 }

@@ -9,6 +9,7 @@ public class Resena {
     private int idUsuario;
     private String nombreUsuario;
     private int idAlbum;
+    private String tituloAlbum;
     private int calificacion;
     private String texto;
     private EstadoResena estado;
@@ -27,6 +28,9 @@ public class Resena {
 
     public int getIdAlbum() { return idAlbum; }
     public void setIdAlbum(int idAlbum) { this.idAlbum = idAlbum; }
+
+    public String getTituloAlbum() { return tituloAlbum; }
+    public void setTituloAlbum(String tituloAlbum) { this.tituloAlbum = tituloAlbum; }
 
     public int getCalificacion() { return calificacion; }
     public void setCalificacion(int calificacion) { this.calificacion = calificacion; }

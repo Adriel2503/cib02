@@ -20,11 +20,17 @@ public interface ListaDAO {
 
     List<Lista> listarPorUsuario(int idUsuario);
 
+    /** Actualiza nombre, descripción y visibilidad; el dueño no cambia. */
+    void actualizar(Lista lista);
+
     List<ListaAlbum> listarAlbumes(int idLista);
 
     void quitarAlbum(int idLista, int idAlbum);
 
     void actualizarPosicion(int idLista, int idAlbum, int posicion);
+
+    /** Usa la conexión recibida, para reordenar toda la lista en una sola transacción. */
+    void actualizarPosicion(Connection conexion, int idLista, int idAlbum, int posicion);
 
     void eliminar(int idLista);
 }

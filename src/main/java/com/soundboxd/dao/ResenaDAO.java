@@ -3,6 +3,7 @@ package com.soundboxd.dao;
 import com.soundboxd.model.EstadoResena;
 import com.soundboxd.model.Resena;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,10 +22,16 @@ public interface ResenaDAO {
     /** Todas las reseñas del usuario, sea cual sea su estado. */
     List<Resena> listarPorUsuario(int idUsuario);
 
-    /** Reseñas publicadas de los usuarios que sigue idSeguidor (feed), las más recientes primero. */
+    /** Reseñas publicadas de las cuentas activas que sigue idSeguidor (feed), las más recientes primero. */
     List<Resena> listarActividadDeSeguidos(int idSeguidor, int limite);
 
     void actualizar(Resena resena);
+
+    /** Cambia calificación y texto sin tocar el estado, para no deshacer una moderación simultánea. */
+    void actualizarContenido(int idResena, int calificacion, String texto);
+
+    /** Pasa a PUBLICADA solo si sigue en BORRADOR; si no, lanza ReglaNegocioException. */
+    void publicarBorrador(int idResena, LocalDateTime fecha);
 
     void eliminar(int idResena);
 

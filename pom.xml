@@ -72,6 +72,18 @@
                 <version>3.5.2</version>
             </plugin>
 
+            <!-- La clave de la base tampoco viaja en el jar sin dependencias (original-Soundboxd.jar) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.4.2</version>
+                <configuration>
+                    <excludes>
+                        <exclude>db.properties</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
             <!-- mvn javafx:run -->
             <plugin>
                 <groupId>org.openjfx</groupId>
@@ -106,6 +118,8 @@
                                 <filter>
                                     <artifact>*:*</artifact>
                                     <excludes>
+                                        <!-- La clave de la base nunca viaja dentro del .jar -->
+                                        <exclude>db.properties</exclude>
                                         <exclude>META-INF/*.SF</exclude>
                                         <exclude>META-INF/*.DSA</exclude>
                                         <exclude>META-INF/*.RSA</exclude>

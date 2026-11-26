@@ -13,7 +13,7 @@ public interface AlbumDAO {
 
     Optional<Album> buscarPorId(int idAlbum);
 
-    /** Búsqueda por texto en el título del álbum o en el nombre del artista. */
+    /** Búsqueda por texto en el título del álbum, el nombre del artista o el género. */
     List<Album> buscar(String texto);
 
     List<Album> listarTodos();

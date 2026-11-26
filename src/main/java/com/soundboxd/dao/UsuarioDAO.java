@@ -2,6 +2,7 @@ package com.soundboxd.dao;
 
 import com.soundboxd.model.Usuario;
 
+import java.util.List;
 import java.util.Optional;
 
 /** Acceso a datos de USUARIO. Todas las consultas usan PreparedStatement. */
@@ -15,6 +16,9 @@ public interface UsuarioDAO {
     Optional<Usuario> buscarPorNombreUsuario(String nombreUsuario);
 
     Optional<Usuario> buscarPorCorreo(String correo);
+
+    /** Cuentas activas cuyo nombre contiene el texto (máximo 50). No trae correo ni hash. */
+    List<Usuario> buscarPorTexto(String texto);
 
     boolean existeNombreUsuario(String nombreUsuario);
 
