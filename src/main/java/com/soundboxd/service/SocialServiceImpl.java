@@ -36,7 +36,8 @@ public class SocialServiceImpl implements SocialService {
         if (actor.getIdUsuario() == idSeguido) {
             throw new ReglaNegocioException("No puedes seguirte a ti mismo.");
         }
-        if (usuarios.buscarPorId(idSeguido).isEmpty()) {
+        // Una cuenta desactivada se trata como inexistente.
+        if (usuarios.buscarPorId(idSeguido).filter(Usuario::isActivo).isEmpty()) {
             throw new ReglaNegocioException("El usuario no existe.");
         }
         if (seguimientos.existe(actor.getIdUsuario(), idSeguido)) {

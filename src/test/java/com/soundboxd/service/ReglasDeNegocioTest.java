@@ -3,6 +3,7 @@ package com.soundboxd.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.soundboxd.dao.UsuarioDAOImpl;
 import com.soundboxd.model.Album;
 import com.soundboxd.model.Lista;
 import com.soundboxd.model.Resena;
@@ -64,6 +65,19 @@ class ReglasDeNegocioTest extends PruebaConBase {
 
         assertEquals(1, listas.listarAlbumes(dueno, privada.getIdLista()).size());
         assertThrows(ReglaNegocioException.class, () -> listas.listarAlbumes(otro, privada.getIdLista()));
+    }
+
+    @Test
+    void noSePuedeSeguirUnaCuentaDesactivada() throws SQLException {
+        Usuario yo = crearUsuario(Rol.USUARIO);
+        Usuario baja = crearUsuario(Rol.USUARIO);
+        new UsuarioDAOImpl().desactivar(baja.getIdUsuario());
+
+        ReglaNegocioException e = assertThrows(ReglaNegocioException.class,
+                () -> social.seguir(yo, baja.getIdUsuario()));
+
+        assertEquals("El usuario no existe.", e.getMessage());
+        assertEquals(0, contar("SELECT COUNT(*) FROM SEGUIMIENTO WHERE id_seguidor = ?", yo.getIdUsuario()));
     }
 
     @Test
