@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /** Implementación JDBC de UsuarioDAO. Solo PreparedStatement: nunca se concatena SQL. */
@@ -73,6 +75,30 @@ public class UsuarioDAOImpl implements UsuarioDAO {
                 FROM USUARIO WHERE correo = ?
                 """;
         return buscarUno(sql, correo);
+    }
+
+    @Override
+    public List<Usuario> buscarPorTexto(String texto) {
+        String sql = """
+                SELECT TOP (50) id_usuario, nombre_usuario, NULL AS correo, NULL AS hash_contrasena,
+                       rol, fecha_registro, activo
+                FROM USUARIO
+                WHERE activo = 1 AND nombre_usuario LIKE ?
+                ORDER BY nombre_usuario
+                """;
+        try (Connection c = ConexionBD.obtener();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setString(1, PatronLike.contiene(texto));
+            try (ResultSet rs = ps.executeQuery()) {
+                List<Usuario> usuarios = new ArrayList<>();
+                while (rs.next()) {
+                    usuarios.add(mapear(rs));
+                }
+                return usuarios;
+            }
+        } catch (SQLException e) {
+            throw new ReglaNegocioException("No se pudieron buscar usuarios.", e);
+        }
     }
 
     @Override

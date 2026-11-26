@@ -14,6 +14,11 @@ public interface SocialService {
 
     List<Usuario> listarSeguidos(Usuario actor);
 
+    /** Usuarios que se pueden seguir cuyo nombre contiene el texto; no incluye al actor. */
+    default List<Usuario> buscarUsuarios(Usuario actor, String texto) {
+        throw new UnsupportedOperationException("Pendiente en esta implementación");
+    }
+
     /** Reseñas publicadas recientes de los usuarios seguidos. */
     List<Resena> actividadReciente(Usuario actor, int limite);
 }

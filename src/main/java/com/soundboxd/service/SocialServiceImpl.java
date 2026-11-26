@@ -58,6 +58,14 @@ public class SocialServiceImpl implements SocialService {
     }
 
     @Override
+    public List<Usuario> buscarUsuarios(Usuario actor, String texto) {
+        ControlAcceso.exigirSesion(actor);
+        return usuarios.buscarPorTexto(texto == null ? "" : texto.trim()).stream()
+                .filter(u -> u.getIdUsuario() != actor.getIdUsuario())
+                .toList();
+    }
+
+    @Override
     public List<Resena> actividadReciente(Usuario actor, int limite) {
         ControlAcceso.exigirSesion(actor);
         if (limite <= 0) {

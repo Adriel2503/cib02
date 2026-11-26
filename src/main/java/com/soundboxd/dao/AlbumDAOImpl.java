@@ -66,8 +66,7 @@ public class AlbumDAOImpl implements AlbumDAO {
                 WHERE a.titulo LIKE ? OR ar.nombre LIKE ?
                 ORDER BY a.titulo
                 """;
-        // El patrón viaja como parámetro; los comodines escritos por el usuario se tratan como texto.
-        String patron = "%" + escaparLike(texto) + "%";
+        String patron = PatronLike.contiene(texto);
         return consultar(sql, patron, patron);
     }
 
@@ -138,10 +137,6 @@ public class AlbumDAOImpl implements AlbumDAO {
     }
 
     // ------------------------------------------------------------------ apoyo
-
-    private static String escaparLike(String texto) {
-        return texto.replace("[", "[[]").replace("%", "[%]").replace("_", "[_]");
-    }
 
     private static void asignar(PreparedStatement ps, Album album) throws SQLException {
         ps.setString(1, album.getTitulo());
