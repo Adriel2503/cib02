@@ -2,6 +2,7 @@
 # 1. Copia este archivo como db.properties (en esta misma carpeta).
 # 2. Reemplaza CAMBIAR_CLAVE por la clave que pusiste a soundboxd_app en el script 00.
 # db.properties está en .gitignore: nunca se sube al repositorio.
+# El .jar no incluye este archivo: coloca tu db.properties en la misma carpeta que el .jar.
 db.url=jdbc:sqlserver://localhost:1433;databaseName=SoundboxdDB;encrypt=true;trustServerCertificate=true
 db.user=soundboxd_app
 db.password=CAMBIAR_CLAVE

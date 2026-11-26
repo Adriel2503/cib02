@@ -2,9 +2,13 @@ package com.soundboxd.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -16,7 +20,7 @@ import java.util.Properties;
  */
 public final class ConexionBD {
 
-    private static final String ARCHIVO = "/db.properties";
+    private static final String NOMBRE = "db.properties";
     private static final String MARCADOR = "CAMBIAR_CLAVE";
     private static Properties propiedades;
 
@@ -34,14 +38,35 @@ public final class ConexionBD {
         }
     }
 
+    /** Primero un db.properties externo (carpeta actual o la del .jar) y después el del classpath. */
+    private static InputStream abrir() throws IOException {
+        for (Path ruta : List.of(Path.of(NOMBRE), carpetaDelPrograma().resolve(NOMBRE))) {
+            if (Files.isRegularFile(ruta)) {
+                return Files.newInputStream(ruta);
+            }
+        }
+        return ConexionBD.class.getResourceAsStream("/" + NOMBRE);
+    }
+
+    private static Path carpetaDelPrograma() {
+        try {
+            Path origen = Path.of(ConexionBD.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+            Path carpeta = origen.getParent();
+            return carpeta == null ? Path.of("") : carpeta;
+        } catch (URISyntaxException e) {
+            return Path.of("");
+        }
+    }
+
     private static synchronized Properties cargar() {
         if (propiedades != null) {
             return propiedades;
         }
-        try (InputStream in = ConexionBD.class.getResourceAsStream(ARCHIVO)) {
+        try (InputStream in = abrir()) {
             if (in == null) {
                 throw new ReglaNegocioException(
-                        "Falta el archivo db.properties. Copia db.properties.example como db.properties en src/main/resources y completa tus datos.");
+                        "Falta el archivo db.properties. Copia db.properties.example como db.properties junto al .jar "
+                        + "o en src/main/resources y completa tus datos.");
             }
             Properties p = new Properties();
             p.load(in);
