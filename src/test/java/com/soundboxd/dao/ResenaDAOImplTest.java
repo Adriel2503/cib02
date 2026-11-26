@@ -13,6 +13,7 @@ import com.soundboxd.pruebas.PruebaConBase;
 import com.soundboxd.util.ReglaNegocioException;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 class ResenaDAOImplTest extends PruebaConBase {
@@ -53,6 +54,19 @@ class ResenaDAOImplTest extends PruebaConBase {
         int id = dao.insertar(resena(crearUsuario(Rol.USUARIO), crearAlbum(), 2, EstadoResena.PUBLICADA));
         dao.cambiarEstado(id, EstadoResena.REPORTADA);
         assertTrue(dao.listarPorEstado(EstadoResena.REPORTADA).stream().anyMatch(r -> r.getIdResena() == id));
+    }
+
+    @Test
+    void editarElContenidoNoDeshaceLaModeracion() {
+        int id = dao.insertar(resena(crearUsuario(Rol.USUARIO), crearAlbum(), 2, EstadoResena.PUBLICADA));
+        dao.cambiarEstado(id, EstadoResena.OCULTA);
+
+        dao.actualizarContenido(id, 5, "Texto nuevo");
+
+        Resena leida = dao.buscarPorId(id).orElseThrow();
+        assertEquals(EstadoResena.OCULTA, leida.getEstado());
+        assertEquals("Texto nuevo", leida.getTexto());
+        assertThrows(ReglaNegocioException.class, () -> dao.publicarBorrador(id, LocalDateTime.now()));
     }
 
     @Test

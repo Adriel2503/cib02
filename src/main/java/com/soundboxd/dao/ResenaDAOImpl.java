@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -147,6 +148,39 @@ public class ResenaDAOImpl implements ResenaDAO {
             }
         } catch (SQLException e) {
             throw new ReglaNegocioException("No se pudo actualizar la reseña.", e);
+        }
+    }
+
+    @Override
+    public void actualizarContenido(int idResena, int calificacion, String texto) {
+        String sql = "UPDATE RESENA SET calificacion = ?, texto = ? WHERE id_resena = ?";
+        try (Connection c = ConexionBD.obtener();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setInt(1, calificacion);
+            ps.setString(2, texto);
+            ps.setInt(3, idResena);
+            if (ps.executeUpdate() == 0) {
+                throw new ReglaNegocioException(NO_EXISTE);
+            }
+        } catch (SQLException e) {
+            throw new ReglaNegocioException("No se pudo actualizar la reseña.", e);
+        }
+    }
+
+    @Override
+    public void publicarBorrador(int idResena, LocalDateTime fecha) {
+        String sql = "UPDATE RESENA SET estado = ?, fecha = ? WHERE id_resena = ? AND estado = ?";
+        try (Connection c = ConexionBD.obtener();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setString(1, EstadoResena.PUBLICADA.name());
+            ps.setTimestamp(2, Timestamp.valueOf(fecha));
+            ps.setInt(3, idResena);
+            ps.setString(4, EstadoResena.BORRADOR.name());
+            if (ps.executeUpdate() == 0) {
+                throw new ReglaNegocioException("Solo se pueden publicar borradores.");
+            }
+        } catch (SQLException e) {
+            throw new ReglaNegocioException("No se pudo publicar la reseña.", e);
         }
     }
 

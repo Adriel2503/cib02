@@ -47,7 +47,7 @@ public class ResenaServiceImpl implements ResenaService {
             }
             existente.setCalificacion(calificacion);
             existente.setTexto(texto);
-            resenas.actualizar(existente);
+            resenas.actualizarContenido(existente.getIdResena(), calificacion, texto);
             return existente;
         }
 
@@ -72,17 +72,15 @@ public class ResenaServiceImpl implements ResenaService {
         }
         r.setEstado(EstadoResena.PUBLICADA);
         r.setFecha(LocalDateTime.now());
-        resenas.actualizar(r);
+        resenas.publicarBorrador(idResena, r.getFecha());
         return r;
     }
 
     @Override
     public void editar(Usuario actor, int idResena, int calificacion, String texto) {
-        Resena r = propia(actor, idResena);
+        propia(actor, idResena);
         validar(calificacion, texto);
-        r.setCalificacion(calificacion);
-        r.setTexto(texto);
-        resenas.actualizar(r);
+        resenas.actualizarContenido(idResena, calificacion, texto);
     }
 
     @Override
