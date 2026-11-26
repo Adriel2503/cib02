@@ -33,6 +33,14 @@ class AlbumDAOImplTest extends PruebaConBase {
     }
 
     @Test
+    void buscaPorGenero() {
+        Album a = crearAlbum();
+        a.setGenero(unico("Genero "));
+        dao.actualizar(a);
+        assertEquals(1, dao.buscar(a.getGenero()).size());
+    }
+
+    @Test
     void elIntentoDeInyeccionSeTrataComoTexto() {
         assertTrue(dao.buscar("' OR 1=1 --").isEmpty());
     }

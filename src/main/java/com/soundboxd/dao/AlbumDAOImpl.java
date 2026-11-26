@@ -63,11 +63,11 @@ public class AlbumDAOImpl implements AlbumDAO {
                 SELECT a.id_album, a.titulo, a.id_artista, ar.nombre AS nombre_artista,
                        a.anio, a.genero, a.portada
                 FROM ALBUM a INNER JOIN ARTISTA ar ON ar.id_artista = a.id_artista
-                WHERE a.titulo LIKE ? OR ar.nombre LIKE ?
+                WHERE a.titulo LIKE ? OR ar.nombre LIKE ? OR a.genero LIKE ?
                 ORDER BY a.titulo
                 """;
         String patron = PatronLike.contiene(texto);
-        return consultar(sql, patron, patron);
+        return consultar(sql, patron, patron, patron);
     }
 
     @Override
