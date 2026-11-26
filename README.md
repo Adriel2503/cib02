@@ -20,7 +20,7 @@ Grupo 3 – Sección O. Docente: Ing. M.I.A. Homar Dávila Padilla.
 - JavaFX (aplicación de escritorio)
 - Patrón MVC
 - Microsoft SQL Server vía JDBC (`mssql-jdbc`) con `PreparedStatement`
-- IDE: IntelliJ IDEA (versión: pendiente de completar)
+- IDE: IntelliJ IDEA 2025.3
 
 ## Estructura del repositorio
 
