@@ -53,9 +53,10 @@ public class ResenaDAOImpl implements ResenaDAO {
     @Override
     public Optional<Resena> buscarPorId(int idResena) {
         String sql = """
-                SELECT r.id_resena, r.id_usuario, u.nombre_usuario, r.id_album,
+                SELECT r.id_resena, r.id_usuario, u.nombre_usuario, r.id_album, al.titulo AS titulo_album,
                        r.calificacion, r.texto, r.estado, r.fecha
                 FROM RESENA r INNER JOIN USUARIO u ON u.id_usuario = r.id_usuario
+                INNER JOIN ALBUM al ON al.id_album = r.id_album
                 WHERE r.id_resena = ?
                 """;
         return consultar(sql, idResena).stream().findFirst();
@@ -64,9 +65,10 @@ public class ResenaDAOImpl implements ResenaDAO {
     @Override
     public Optional<Resena> buscarPorUsuarioYAlbum(int idUsuario, int idAlbum) {
         String sql = """
-                SELECT r.id_resena, r.id_usuario, u.nombre_usuario, r.id_album,
+                SELECT r.id_resena, r.id_usuario, u.nombre_usuario, r.id_album, al.titulo AS titulo_album,
                        r.calificacion, r.texto, r.estado, r.fecha
                 FROM RESENA r INNER JOIN USUARIO u ON u.id_usuario = r.id_usuario
+                INNER JOIN ALBUM al ON al.id_album = r.id_album
                 WHERE r.id_usuario = ? AND r.id_album = ?
                 """;
         return consultar(sql, idUsuario, idAlbum).stream().findFirst();
@@ -75,9 +77,10 @@ public class ResenaDAOImpl implements ResenaDAO {
     @Override
     public List<Resena> listarPublicadasPorAlbum(int idAlbum) {
         String sql = """
-                SELECT r.id_resena, r.id_usuario, u.nombre_usuario, r.id_album,
+                SELECT r.id_resena, r.id_usuario, u.nombre_usuario, r.id_album, al.titulo AS titulo_album,
                        r.calificacion, r.texto, r.estado, r.fecha
                 FROM RESENA r INNER JOIN USUARIO u ON u.id_usuario = r.id_usuario
+                INNER JOIN ALBUM al ON al.id_album = r.id_album
                 WHERE r.id_album = ? AND r.estado = ?
                 ORDER BY r.fecha DESC, r.id_resena DESC
                 """;
@@ -87,9 +90,10 @@ public class ResenaDAOImpl implements ResenaDAO {
     @Override
     public List<Resena> listarPorUsuario(int idUsuario) {
         String sql = """
-                SELECT r.id_resena, r.id_usuario, u.nombre_usuario, r.id_album,
+                SELECT r.id_resena, r.id_usuario, u.nombre_usuario, r.id_album, al.titulo AS titulo_album,
                        r.calificacion, r.texto, r.estado, r.fecha
                 FROM RESENA r INNER JOIN USUARIO u ON u.id_usuario = r.id_usuario
+                INNER JOIN ALBUM al ON al.id_album = r.id_album
                 WHERE r.id_usuario = ?
                 ORDER BY r.fecha DESC, r.id_resena DESC
                 """;
@@ -100,7 +104,7 @@ public class ResenaDAOImpl implements ResenaDAO {
     public List<Resena> listarActividadDeSeguidos(int idSeguidor, int limite) {
         // La vista solo contiene reseñas publicadas, por eso el estado se fija como literal.
         String sql = """
-                SELECT TOP (?) v.id_resena, v.id_usuario, v.nombre_usuario, v.id_album,
+                SELECT TOP (?) v.id_resena, v.id_usuario, v.nombre_usuario, v.id_album, v.titulo_album,
                        v.calificacion, v.texto, 'PUBLICADA' AS estado, v.fecha
                 FROM vw_actividad_reciente v
                 INNER JOIN SEGUIMIENTO s ON s.id_seguido = v.id_usuario
@@ -113,9 +117,10 @@ public class ResenaDAOImpl implements ResenaDAO {
     @Override
     public List<Resena> listarPorEstado(EstadoResena estado) {
         String sql = """
-                SELECT r.id_resena, r.id_usuario, u.nombre_usuario, r.id_album,
+                SELECT r.id_resena, r.id_usuario, u.nombre_usuario, r.id_album, al.titulo AS titulo_album,
                        r.calificacion, r.texto, r.estado, r.fecha
                 FROM RESENA r INNER JOIN USUARIO u ON u.id_usuario = r.id_usuario
+                INNER JOIN ALBUM al ON al.id_album = r.id_album
                 WHERE r.estado = ?
                 ORDER BY r.fecha DESC, r.id_resena DESC
                 """;
@@ -203,6 +208,7 @@ public class ResenaDAOImpl implements ResenaDAO {
         r.setIdUsuario(rs.getInt("id_usuario"));
         r.setNombreUsuario(rs.getString("nombre_usuario"));
         r.setIdAlbum(rs.getInt("id_album"));
+        r.setTituloAlbum(rs.getString("titulo_album"));
         r.setCalificacion(rs.getInt("calificacion"));
         r.setTexto(rs.getString("texto"));
         r.setEstado(EstadoResena.valueOf(rs.getString("estado")));
