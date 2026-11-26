@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.soundboxd.controller.EditorResenaController" styleClass="fondo">
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="12" styleClass="barra-superior">
+            <Button text="← Cancelar" onAction="#onCancelar" styleClass="boton-secundario"/>
+            <Label text="Editor de reseña" styleClass="titulo-barra"/>
+        </HBox>
+    </top>
+    <center>
+        <VBox spacing="10" maxWidth="640" alignment="TOP_LEFT">
+            <padding>
+                <Insets top="20" right="20" bottom="8" left="20"/>
+            </padding>
+            <Label fx:id="lblAlbum" styleClass="titulo-pantalla"/>
+            <Label text="Calificación (1 a 5)"/>
+            <ComboBox fx:id="cmbCalificacion" promptText="Elige una nota"/>
+            <Label text="Tu reseña"/>
+            <TextArea fx:id="txtTexto" wrapText="true" prefRowCount="8" promptText="Escribe tu opinión del álbum"/>
+            <HBox spacing="8">
+                <Button fx:id="btnGuardar" text="Guardar borrador" onAction="#onGuardar" styleClass="boton-secundario"/>
+                <Button fx:id="btnPublicar" text="Publicar" onAction="#onPublicar" styleClass="boton-primario"/>
+            </HBox>
+        </VBox>
+    </center>
+    <bottom>
+        <Label fx:id="lblMensaje" styleClass="mensaje" wrapText="true">
+            <padding>
+                <Insets top="6" right="20" bottom="10" left="20"/>
+            </padding>
+        </Label>
+    </bottom>
+</BorderPane>

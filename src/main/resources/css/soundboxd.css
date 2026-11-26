@@ -60,3 +60,23 @@
     -fx-background-radius: 6;
     -fx-cursor: hand;
 }
+
+.titulo-pantalla {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1f3864;
+}
+
+.seccion {
+    -fx-font-weight: bold;
+    -fx-text-fill: #1f3864;
+}
+
+.destacado {
+    -fx-font-size: 16px;
+    -fx-text-fill: #2f5597;
+}
+
+.mensaje {
+    -fx-text-fill: #1f3864;
+}

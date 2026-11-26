@@ -1,5 +1,6 @@
 package com.soundboxd.view.falso;
 
+import com.soundboxd.model.Album;
 import com.soundboxd.model.Lista;
 import com.soundboxd.model.Usuario;
 import com.soundboxd.security.ControlAcceso;
@@ -93,5 +94,18 @@ public class ListaServiceFalso implements ListaService {
         ControlAcceso.exigirPropietario(actor, lista.getIdUsuario());
         DatosFalsos.LISTAS.remove(lista);
         DatosFalsos.ALBUMES_DE_LISTA.remove(idLista);
+    }
+
+    /**
+     * EXTRA que NO está en la interfaz ListaService real: devuelve los álbumes de una lista, en orden.
+     * PENDIENTE-AMADO: pedirle que agregue {@code List<Album> listarAlbumes(int idLista)} a ListaService.
+     */
+    public List<Album> listarAlbumes(int idLista) {
+        DatosFalsos.listaPorId(idLista);
+        List<Album> resultado = new ArrayList<>();
+        for (int id : DatosFalsos.ALBUMES_DE_LISTA.get(idLista)) {
+            resultado.add(DatosFalsos.albumPorId(id));
+        }
+        return resultado;
     }
 }

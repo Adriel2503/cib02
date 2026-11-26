@@ -17,6 +17,9 @@
         <HBox alignment="CENTER_LEFT" spacing="12" styleClass="barra-superior">
             <Label text="Soundboxd" styleClass="titulo-barra"/>
             <Region HBox.hgrow="ALWAYS"/>
+            <Button fx:id="btnMisListas" text="Mis listas" onAction="#onMisListas" styleClass="boton-secundario"/>
+            <Button fx:id="btnPerfil" text="Perfil" onAction="#onPerfil" styleClass="boton-secundario"/>
+            <Button fx:id="btnModeracion" text="Moderación" onAction="#onModeracion" styleClass="boton-secundario"/>
             <Label fx:id="lblUsuario"/>
             <Button fx:id="btnSesion" onAction="#onSesion" styleClass="boton-secundario"/>
         </HBox>
@@ -30,6 +33,7 @@
                 <TextField fx:id="txtBuscar" promptText="Buscar por álbum, artista o género"
                            HBox.hgrow="ALWAYS" onAction="#onBuscar"/>
                 <Button text="Buscar" onAction="#onBuscar" styleClass="boton-primario"/>
+                <Button text="Ver detalle" onAction="#onDetalle" styleClass="boton-secundario"/>
             </HBox>
             <TableView fx:id="tabla" VBox.vgrow="ALWAYS">
                 <columns>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.soundboxd.controller.DetalleController" styleClass="fondo">
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="12" styleClass="barra-superior">
+            <Button text="← Volver" onAction="#onVolver" styleClass="boton-secundario"/>
+            <Label text="Detalle de álbum" styleClass="titulo-barra"/>
+        </HBox>
+    </top>
+    <center>
+        <VBox spacing="10">
+            <padding>
+                <Insets top="16" right="20" bottom="8" left="20"/>
+            </padding>
+            <Label fx:id="lblTitulo" styleClass="titulo-pantalla"/>
+            <Label fx:id="lblInfo" styleClass="subtitulo"/>
+            <Label fx:id="lblPromedio" styleClass="destacado"/>
+            <HBox spacing="16" VBox.vgrow="ALWAYS">
+                <VBox spacing="6" HBox.hgrow="ALWAYS" prefWidth="300">
+                    <Label text="Canciones" styleClass="seccion"/>
+                    <ListView fx:id="lstCanciones" VBox.vgrow="ALWAYS"/>
+                </VBox>
+                <VBox spacing="6" HBox.hgrow="ALWAYS" prefWidth="420">
+                    <Label text="Reseñas publicadas" styleClass="seccion"/>
+                    <ListView fx:id="lstResenas" VBox.vgrow="ALWAYS"/>
+                    <HBox spacing="8">
+                        <Button fx:id="btnSeguirAutor" text="Seguir al autor" onAction="#onSeguirAutor" styleClass="boton-secundario"/>
+                        <Button fx:id="btnReportar" text="Reportar reseña" onAction="#onReportar" styleClass="boton-secundario"/>
+                    </HBox>
+                </VBox>
+            </HBox>
+            <HBox spacing="8" alignment="CENTER_LEFT">
+                <Button fx:id="btnEscribir" text="Escribir reseña" onAction="#onEscribir" styleClass="boton-primario"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <ComboBox fx:id="cmbListas" promptText="Mis listas" prefWidth="220"/>
+                <Button fx:id="btnAgregarALista" text="Agregar a la lista" onAction="#onAgregarALista" styleClass="boton-secundario"/>
+            </HBox>
+        </VBox>
+    </center>
+    <bottom>
+        <Label fx:id="lblMensaje" styleClass="mensaje" wrapText="true">
+            <padding>
+                <Insets top="6" right="20" bottom="10" left="20"/>
+            </padding>
+        </Label>
+    </bottom>
+</BorderPane>
