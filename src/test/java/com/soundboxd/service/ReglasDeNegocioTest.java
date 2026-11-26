@@ -81,6 +81,26 @@ class ReglasDeNegocioTest extends PruebaConBase {
     }
 
     @Test
+    void unaCuentaDesactivadaSaleDeSeguidosYFeedPeroSusResenasSiguen() throws SQLException {
+        Usuario yo = crearUsuario(Rol.USUARIO);
+        Usuario autor = crearUsuario(Rol.USUARIO);
+        Album a = crearAlbum();
+        social.seguir(yo, autor.getIdUsuario());
+        Resena borrador = resenas.guardarBorrador(autor, a.getIdAlbum(), 4, "texto");
+        resenas.publicar(autor, borrador.getIdResena());
+        assertEquals(1, social.actividadReciente(yo, 10).size());
+
+        new UsuarioDAOImpl().desactivar(autor.getIdUsuario());
+
+        assertEquals(0, social.listarSeguidos(yo).size());
+        assertEquals(0, social.actividadReciente(yo, 10).size());
+        assertEquals(1, resenas.listarPorAlbum(a.getIdAlbum()).size());
+        assertEquals(4.0, new CatalogoServiceImpl().promedioAlbum(a.getIdAlbum()), 0.001);
+        // Eliminación lógica: el seguimiento no se borra.
+        assertEquals(1, contar("SELECT COUNT(*) FROM SEGUIMIENTO WHERE id_seguidor = ?", yo.getIdUsuario()));
+    }
+
+    @Test
     void nadiePuedeSeguirseASiMismo() {
         Usuario u = crearUsuario(Rol.USUARIO);
         ReglaNegocioException e = assertThrows(ReglaNegocioException.class,

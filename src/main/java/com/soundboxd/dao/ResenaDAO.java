@@ -21,7 +21,7 @@ public interface ResenaDAO {
     /** Todas las reseñas del usuario, sea cual sea su estado. */
     List<Resena> listarPorUsuario(int idUsuario);
 
-    /** Reseñas publicadas de los usuarios que sigue idSeguidor (feed), las más recientes primero. */
+    /** Reseñas publicadas de las cuentas activas que sigue idSeguidor (feed), las más recientes primero. */
     List<Resena> listarActividadDeSeguidos(int idSeguidor, int limite);
 
     void actualizar(Resena resena);

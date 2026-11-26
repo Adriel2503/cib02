@@ -69,7 +69,7 @@ public class SeguimientoDAOImpl implements SeguimientoDAO {
         String sql = """
                 SELECT u.id_usuario, u.nombre_usuario, u.correo, u.rol, u.fecha_registro, u.activo
                 FROM SEGUIMIENTO s INNER JOIN USUARIO u ON u.id_usuario = s.id_seguido
-                WHERE s.id_seguidor = ?
+                WHERE s.id_seguidor = ? AND u.activo = 1
                 ORDER BY u.nombre_usuario
                 """;
         try (Connection c = ConexionBD.obtener();

@@ -108,7 +108,8 @@ public class ResenaDAOImpl implements ResenaDAO {
                        v.calificacion, v.texto, 'PUBLICADA' AS estado, v.fecha
                 FROM vw_actividad_reciente v
                 INNER JOIN SEGUIMIENTO s ON s.id_seguido = v.id_usuario
-                WHERE s.id_seguidor = ?
+                INNER JOIN USUARIO u ON u.id_usuario = v.id_usuario
+                WHERE s.id_seguidor = ? AND u.activo = 1
                 ORDER BY v.fecha DESC, v.id_resena DESC
                 """;
         return consultar(sql, limite, idSeguidor);
