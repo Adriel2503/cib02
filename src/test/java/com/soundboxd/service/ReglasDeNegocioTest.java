@@ -14,6 +14,7 @@ import com.soundboxd.util.ReglaNegocioException;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 /** Reglas que la guía pide comprobar, contra la base real. */
@@ -54,6 +55,16 @@ class ReglasDeNegocioTest extends PruebaConBase {
 
         assertEquals(0, contar("SELECT COUNT(*) FROM LISTA WHERE id_usuario = ?", u.getIdUsuario()));
         assertEquals(0, contar("SELECT COUNT(*) FROM LISTA_ALBUM WHERE id_album = ?", a.getIdAlbum()));
+    }
+
+    @Test
+    void unIdDeAlbumNuloDaUnMensajeClaro() {
+        Usuario u = crearUsuario(Rol.USUARIO);
+
+        ReglaNegocioException e = assertThrows(ReglaNegocioException.class, () -> listas.crearListaConAlbumes(
+                u, "Con nulo", null, false, Arrays.asList(1, null)));
+
+        assertEquals("La lista contiene un álbum no válido.", e.getMessage());
     }
 
     @Test

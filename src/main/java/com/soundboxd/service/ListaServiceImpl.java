@@ -15,6 +15,7 @@ import com.soundboxd.util.Transaccion;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -42,6 +43,9 @@ public class ListaServiceImpl implements ListaService {
         ControlAcceso.exigirSesion(actor);
         validar(nombre, descripcion);
         List<Integer> ids = idsAlbum == null ? List.of() : idsAlbum;
+        if (ids.stream().anyMatch(Objects::isNull)) {
+            throw new ReglaNegocioException("La lista contiene un álbum no válido.");
+        }
         if (new HashSet<>(ids).size() != ids.size()) {
             throw new ReglaNegocioException("La lista no puede repetir álbumes.");
         }
