@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.soundboxd.controller.ListasController" styleClass="fondo">
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="12" styleClass="barra-superior">
+            <Button text="← Volver" onAction="#onVolver" styleClass="boton-secundario"/>
+            <Label text="Mis listas" styleClass="titulo-barra"/>
+        </HBox>
+    </top>
+    <center>
+        <VBox spacing="12">
+            <padding>
+                <Insets top="16" right="20" bottom="8" left="20"/>
+            </padding>
+            <HBox spacing="8" alignment="CENTER_LEFT">
+                <TextField fx:id="txtNombre" promptText="Nombre de la lista" prefWidth="220"/>
+                <TextField fx:id="txtDescripcion" promptText="Descripción (opcional)" HBox.hgrow="ALWAYS"/>
+                <CheckBox fx:id="chkPublica" text="Pública"/>
+                <Button text="Crear lista" onAction="#onCrear" styleClass="boton-primario"/>
+            </HBox>
+            <HBox spacing="16" VBox.vgrow="ALWAYS">
+                <VBox spacing="6" prefWidth="300">
+                    <Label text="Mis listas" styleClass="seccion"/>
+                    <ListView fx:id="lstListas" VBox.vgrow="ALWAYS"/>
+                    <Button text="Eliminar lista" onAction="#onEliminar" styleClass="boton-secundario"/>
+                </VBox>
+                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                    <Label text="Álbumes de la lista (en orden)" styleClass="seccion"/>
+                    <ListView fx:id="lstAlbumes" VBox.vgrow="ALWAYS"/>
+                    <HBox spacing="8">
+                        <Button text="↑ Subir" onAction="#onSubir" styleClass="boton-secundario"/>
+                        <Button text="↓ Bajar" onAction="#onBajar" styleClass="boton-secundario"/>
+                        <Button text="Quitar álbum" onAction="#onQuitar" styleClass="boton-secundario"/>
+                    </HBox>
+                    <HBox spacing="8">
+                        <ComboBox fx:id="cmbCatalogo" promptText="Álbum a agregar" prefWidth="340"/>
+                        <Button text="Agregar a la lista" onAction="#onAgregar" styleClass="boton-primario"/>
+                    </HBox>
+                </VBox>
+            </HBox>
+        </VBox>
+    </center>
+    <bottom>
+        <Label fx:id="lblMensaje" styleClass="mensaje" wrapText="true">
+            <padding>
+                <Insets top="6" right="20" bottom="10" left="20"/>
+            </padding>
+        </Label>
+    </bottom>
+</BorderPane>

@@ -1,5 +1,6 @@
 package com.soundboxd.view;
 
+import com.soundboxd.model.Album;
 import com.soundboxd.security.AuthService;
 import com.soundboxd.service.CatalogoService;
 import com.soundboxd.service.ListaService;
@@ -12,6 +13,8 @@ import com.soundboxd.view.falso.ListaServiceFalso;
 import com.soundboxd.view.falso.ModeracionServiceFalso;
 import com.soundboxd.view.falso.ResenaServiceFalso;
 import com.soundboxd.view.falso.SocialServiceFalso;
+
+import java.util.List;
 
 /**
  * Único lugar donde se crean los servicios que usan los controladores.
@@ -27,7 +30,7 @@ public final class Servicios {
     private static final AuthService AUTH = new AuthServiceFalso();
     private static final CatalogoService CATALOGO = new CatalogoServiceFalso();
     private static final ResenaService RESENAS = new ResenaServiceFalso();
-    private static final ListaService LISTAS = new ListaServiceFalso();
+    private static final ListaServiceFalso LISTAS = new ListaServiceFalso();
     private static final SocialService SOCIAL = new SocialServiceFalso();
     private static final ModeracionService MODERACION = new ModeracionServiceFalso();
 
@@ -40,6 +43,13 @@ public final class Servicios {
     public static ResenaService resenas() { return RESENAS; }
 
     public static ListaService listas() { return LISTAS; }
+
+    /**
+     * PENDIENTE-AMADO: ListaService no tiene un método para obtener los álbumes de una lista.
+     * Mientras tanto se usa el del servicio falso. Cuando Amado lo agregue a la interfaz,
+     * cambiar el cuerpo por {@code return LISTAS.listarAlbumes(idLista);} con el servicio real.
+     */
+    public static List<Album> albumesDeLista(int idLista) { return LISTAS.listarAlbumes(idLista); }
 
     public static SocialService social() { return SOCIAL; }
 

@@ -1,10 +1,10 @@
 package com.soundboxd.controller;
 
 import com.soundboxd.model.Album;
-import com.soundboxd.util.ReglaNegocioException;
 import com.soundboxd.view.Navegador;
 import com.soundboxd.view.Servicios;
 import com.soundboxd.view.Sesion;
+import com.soundboxd.view.Tareas;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,9 +15,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
+import java.util.ArrayList;
 import java.util.List;
 
-/** Pantalla catalogo.fxml (M2): búsqueda de álbumes con su promedio. Solo llama a servicios. */
+/** Pantalla catalogo.fxml (M2): búsqueda de álbumes con su promedio y acceso al resto de pantallas. */
 public class CatalogoController {
 
     /** Una fila de la tabla: el álbum y su promedio ya calculado (se pide una sola vez por búsqueda). */
@@ -27,6 +28,12 @@ public class CatalogoController {
     private Label lblUsuario;
     @FXML
     private Button btnSesion;
+    @FXML
+    private Button btnMisListas;
+    @FXML
+    private Button btnPerfil;
+    @FXML
+    private Button btnModeracion;
     @FXML
     private TextField txtBuscar;
     @FXML
@@ -52,19 +59,49 @@ public class CatalogoController {
         colGenero.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().album().getGenero()));
         colPromedio.setCellValueFactory(c -> new SimpleStringProperty(formatoPromedio(c.getValue().promedio())));
 
-        if (Sesion.haySesion()) {
+        boolean sesion = Sesion.haySesion();
+        if (sesion) {
             lblUsuario.setText("Hola, " + Sesion.getUsuario().getNombreUsuario());
             btnSesion.setText("Cerrar sesión");
         } else {
             lblUsuario.setText("Visitante");
             btnSesion.setText("Ingresar");
         }
+        mostrarSi(btnMisListas, sesion);
+        mostrarSi(btnPerfil, sesion);
+        mostrarSi(btnModeracion, Sesion.esModerador());   // la validación real está en el servicio
         cargar("");
     }
 
     @FXML
     private void onBuscar() {
         cargar(txtBuscar.getText());
+    }
+
+    @FXML
+    private void onDetalle() {
+        FilaAlbum fila = tabla.getSelectionModel().getSelectedItem();
+        if (fila == null) {
+            lblMensaje.setText("Selecciona un álbum de la tabla.");
+            return;
+        }
+        int id = fila.album().getIdAlbum();
+        Navegador.<DetalleController>ir("detalle", c -> c.mostrar(id));
+    }
+
+    @FXML
+    private void onMisListas() {
+        Navegador.ir("listas");
+    }
+
+    @FXML
+    private void onPerfil() {
+        Navegador.ir("perfil");
+    }
+
+    @FXML
+    private void onModeracion() {
+        Navegador.ir("moderacion");
     }
 
     @FXML
@@ -77,20 +114,27 @@ public class CatalogoController {
     }
 
     private void cargar(String texto) {
-        try {
-            List<Album> albumes = Servicios.catalogo().buscarAlbumes(texto);
-            ObservableList<FilaAlbum> filas = FXCollections.observableArrayList();
-            for (Album album : albumes) {
-                filas.add(new FilaAlbum(album, Servicios.catalogo().promedioAlbum(album.getIdAlbum())));
-            }
-            tabla.setItems(filas);
-            lblMensaje.setText(albumes.isEmpty() ? "No se encontraron álbumes." : albumes.size() + " álbum(es)");
-        } catch (ReglaNegocioException e) {
-            lblMensaje.setText(e.getMessage());
-        } catch (RuntimeException e) {
-            lblMensaje.setText("Ocurrió un error inesperado. Inténtalo de nuevo.");
-            e.printStackTrace();
-        }
+        lblMensaje.setText("Cargando...");
+        Tareas.ejecutar(
+                () -> {
+                    List<FilaAlbum> filas = new ArrayList<>();
+                    for (Album album : Servicios.catalogo().buscarAlbumes(texto)) {
+                        filas.add(new FilaAlbum(album, Servicios.catalogo().promedioAlbum(album.getIdAlbum())));
+                    }
+                    return filas;
+                },
+                filas -> {
+                    ObservableList<FilaAlbum> items = FXCollections.observableArrayList();
+                    items.addAll(filas);
+                    tabla.setItems(items);
+                    lblMensaje.setText(filas.isEmpty() ? "No se encontraron álbumes." : filas.size() + " álbum(es)");
+                },
+                lblMensaje::setText);
+    }
+
+    private static void mostrarSi(Button boton, boolean visible) {
+        boton.setVisible(visible);
+        boton.setManaged(visible);
     }
 
     private static String formatoPromedio(double promedio) {
