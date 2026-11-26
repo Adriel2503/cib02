@@ -20,6 +20,9 @@ public interface ListaDAO {
 
     List<Lista> listarPorUsuario(int idUsuario);
 
+    /** Actualiza nombre, descripción y visibilidad; el dueño no cambia. */
+    void actualizar(Lista lista);
+
     List<ListaAlbum> listarAlbumes(int idLista);
 
     void quitarAlbum(int idLista, int idAlbum);

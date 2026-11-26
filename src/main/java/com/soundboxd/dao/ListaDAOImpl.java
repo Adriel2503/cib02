@@ -82,6 +82,23 @@ public class ListaDAOImpl implements ListaDAO {
     }
 
     @Override
+    public void actualizar(Lista lista) {
+        String sql = "UPDATE LISTA SET nombre = ?, descripcion = ?, es_publica = ? WHERE id_lista = ?";
+        try (Connection c = ConexionBD.obtener();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setString(1, lista.getNombre());
+            ps.setString(2, lista.getDescripcion());
+            ps.setBoolean(3, lista.isEsPublica());
+            ps.setInt(4, lista.getIdLista());
+            if (ps.executeUpdate() == 0) {
+                throw new ReglaNegocioException("La lista no existe.");
+            }
+        } catch (SQLException e) {
+            throw new ReglaNegocioException("No se pudo actualizar la lista.", e);
+        }
+    }
+
+    @Override
     public List<ListaAlbum> listarAlbumes(int idLista) {
         String sql = """
                 SELECT id_lista, id_album, posicion

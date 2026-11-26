@@ -1,6 +1,7 @@
 package com.soundboxd.dao;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.soundboxd.model.Lista;
@@ -34,6 +35,14 @@ class ListaDAOImplTest extends PruebaConBase {
 
         assertEquals("Mi lista", dao.buscarPorId(id).orElseThrow().getNombre());
         assertEquals(1, dao.listarPorUsuario(lista.getIdUsuario()).size());
+
+        lista.setIdLista(id);
+        lista.setNombre("Nombre nuevo");
+        lista.setEsPublica(false);
+        dao.actualizar(lista);
+        Lista actualizada = dao.buscarPorId(id).orElseThrow();
+        assertEquals("Nombre nuevo", actualizada.getNombre());
+        assertFalse(actualizada.isEsPublica());
 
         dao.actualizarPosicion(id, segundo, 1);
         dao.actualizarPosicion(id, primero, 2);
