@@ -38,6 +38,7 @@ class ReglasDeNegocioTest extends PruebaConBase {
         Usuario u = crearUsuario(Rol.USUARIO);
         Album a = crearAlbum();
         Resena borrador = resenas.guardarBorrador(u, a.getIdAlbum(), 4, "texto");
+        assertEquals(a.getTitulo(), borrador.getTituloAlbum());
         resenas.publicar(u, borrador.getIdResena());
 
         ReglaNegocioException e = assertThrows(ReglaNegocioException.class,

@@ -4,6 +4,7 @@ import com.soundboxd.dao.AlbumDAO;
 import com.soundboxd.dao.AlbumDAOImpl;
 import com.soundboxd.dao.ResenaDAO;
 import com.soundboxd.dao.ResenaDAOImpl;
+import com.soundboxd.model.Album;
 import com.soundboxd.model.EstadoResena;
 import com.soundboxd.model.Resena;
 import com.soundboxd.model.Usuario;
@@ -36,9 +37,8 @@ public class ResenaServiceImpl implements ResenaService {
     public Resena guardarBorrador(Usuario actor, int idAlbum, int calificacion, String texto) {
         ControlAcceso.exigirSesion(actor);
         validar(calificacion, texto);
-        if (albumes.buscarPorId(idAlbum).isEmpty()) {
-            throw new ReglaNegocioException("El álbum no existe.");
-        }
+        Album album = albumes.buscarPorId(idAlbum)
+                .orElseThrow(() -> new ReglaNegocioException("El álbum no existe."));
 
         Resena existente = resenas.buscarPorUsuarioYAlbum(actor.getIdUsuario(), idAlbum).orElse(null);
         if (existente != null) {
@@ -55,6 +55,7 @@ public class ResenaServiceImpl implements ResenaService {
         nueva.setIdUsuario(actor.getIdUsuario());
         nueva.setNombreUsuario(actor.getNombreUsuario());
         nueva.setIdAlbum(idAlbum);
+        nueva.setTituloAlbum(album.getTitulo());
         nueva.setCalificacion(calificacion);
         nueva.setTexto(texto);
         nueva.setEstado(EstadoResena.BORRADOR);
